@@ -1,6 +1,7 @@
 version: '3'
-
+##################################
 services:
+  #################
   ovsdb-server:
     container_name: ovsdb-server
     cap_add:
@@ -20,7 +21,7 @@ services:
     privileged: true
     image: openvswitch/ovs:latest
     command: ovsdb-server
-
+  #################
   ovs-vswitchd:
     container_name: ovs-vswitchd
     cap_add:
@@ -29,8 +30,6 @@ services:
       - SYS_NICE
     networks:
       - ovscomm
-      - network1
-      - network2
     volumes_from:
       - ovsdb-server
     security_opt:
@@ -38,44 +37,46 @@ services:
     privileged: true
     image: openvswitch/ovs:latest
     command: ovs-vswitchd
-
-  ubuntu1:
+  #################
+  u1:
     container_name: h1
     image: host:latest
-    networks:
-      network1:
-        aliases:
-          - network1
-    cap_add:
-      - NET_ADMIN
-   # command: tail -f /dev/null
-
-  ubuntu2:
+    command: tail -F anything
+    network_mode: none
+#    depends_on:
+#      - ovs-vswitchd
+  #################
+  u2:
     container_name: h2
     image: host:latest
-    networks:
-      network2:
-        aliases:
-          - network2
-    cap_add:
-      - NET_ADMIN
-
+    command: tail -F anything
+    network_mode: none
+#    depends_on:
+#      - ovs-vswitchd
+  #################
+  u3:
+    container_name: h3
+    image: host:latest
+    command: tail -F anything
+    network_mode: none
+#    depends_on:
+#      - ovs-vswitchd
+  #################
   ryu:
     container_name: ryu
-    image: osrg/ryu
+    image: osrg/ryu:latest
     networks:
       - ovscomm
     #network_mode: "service:ovs-vswitchd"
     #tty: true
     #stdin_open: true
-    privileged: true
+    #privileged: true
     cap_add:
       - NET_ADMIN
     #command: /bin/bash
-    #command: bash -c "ryu-manager ryu.app.simple_switch_13 && apt-get update && apt-get install -y openvswitch-switch"
-    command: bash -c "apt-get update && apt-get install -y openvswitch-switch && ryu-manager --ofp-tcp-listen-port 6653 ryu.app.simple_switch_13"
-
+    command: bash -c "ryu-manager --ofp-tcp-listen-port 6653 ryu.app.simple_switch_13"
+##################################
 networks:
   ovscomm:
-  network1:
-  network2:
+#  n1:
+#  network2:

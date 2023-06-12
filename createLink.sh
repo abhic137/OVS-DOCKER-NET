@@ -18,17 +18,21 @@ createNS(){
 addLink(){
 	C1=$1
 	C2=$2
+	echo "Provide Interface Name of ${C1} (e.g. dcp100):"
+	read C1_IF
+	echo "Provide Interface Name of ${C2} (e.g. dcp100):"
+	read C2_IF
 	#ip netns exec ${CONTAINER_ID}) ip a
 	echo "Creating Link ..."
 	ip link add veth1_l type veth peer veth1_r
 	ip link set veth1_l netns ${C1}
 	ip link set veth1_r netns ${C2}
-	ip netns exec ${C1} ip l set veth1_l name eth0
-	ip netns exec ${C2} ip l set veth1_r name eth0
-	ip netns exec ${C1} ip a add 10.0.0.1/30 dev eth0
-	ip netns exec ${C2} ip a add 10.0.0.2/30 dev eth0
-	ip netns exec ${C1} ip l set eth0 up
-	ip netns exec ${C2} ip l set eth0 up
+	ip netns exec ${C1} ip l set veth1_l name ${C1_IF}
+	ip netns exec ${C2} ip l set veth1_r name ${C2_IF}
+	ip netns exec ${C1} ip a add 10.0.0.1/30 dev ${C1_IF}
+	ip netns exec ${C2} ip a add 10.0.0.2/30 dev ${C2_IF}
+	ip netns exec ${C1} ip l set ${C1_IF} up
+	ip netns exec ${C2} ip l set ${C2_IF} up
 	ip netns exec ${C1} ip r add 0.0.0.0/0 via 10.0.0.2
 	ip netns exec ${C2} ip r add 0.0.0.0/0 via 10.0.0.1
 }
@@ -41,5 +45,7 @@ createNS ${C2_ID}
 addLink ${C1_NAME} ${C2_NAME}
 
 
-
-## sudo rm /var/run/netns/* #Cleanup
+##############################################################
+## sudo rm /var/run/netns/* 	#Cleanup
+## ip -c link show type veth 	# List veth
+## ethtool -S veth1 			#veth peering info

@@ -22,8 +22,8 @@ services:
     image: openvswitch/ovs:latest
     command: ovsdb-server
   #################
-  ovs-vswitchd:
-    container_name: ovs-vswitchd
+  switch:
+    container_name: s1
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

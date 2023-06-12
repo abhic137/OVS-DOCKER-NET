@@ -40,30 +40,25 @@ services:
     command: ovs-vswitchd
 
   ubuntu1:
-    container_name: ubuntu1
-    image: ubuntu
+    container_name: h1
+    image: host:latest
     networks:
       network1:
         aliases:
           - network1
-    privileged: true
     cap_add:
       - NET_ADMIN
    # command: tail -f /dev/null
-    command: bash -c "apt-get update && apt-get install -y net-tools && apt-get install -y iputils-ping && apt-get install -y iproute2 && tail -f /dev/null"
-
 
   ubuntu2:
-    container_name: ubuntu2
-    image: ubuntu
+    container_name: h2
+    image: host:latest
     networks:
       network2:
         aliases:
           - network2
-    privileged: true
     cap_add:
       - NET_ADMIN
-    command: bash -c "apt-get update && apt-get install -y net-tools && apt-get install -y iputils-ping && apt-get install -y iproute2 && tail -f /dev/null"
 
   ryu:
     container_name: ryu

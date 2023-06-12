@@ -42,4 +42,4 @@ addLink ${C1_NAME} ${C2_NAME}
 
 
 
-## sudo rm /var/run/netns/ #Cleanup
+## sudo rm /var/run/netns/* #Cleanup

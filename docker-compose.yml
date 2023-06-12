@@ -18,7 +18,7 @@ services:
     security_opt:
       - label=disable
     privileged: true
-    image: shivarammysore/ovs:latest
+    image: openvswitch/ovs:latest
     command: ovsdb-server
 
   ovs-vswitchd:
@@ -36,7 +36,7 @@ services:
     security_opt:
       - label=disable
     privileged: true
-    image: shivarammysore/ovs:latest
+    image: openvswitch/ovs:latest
     command: ovs-vswitchd
 
   ubuntu1:

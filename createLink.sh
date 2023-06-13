@@ -1,6 +1,4 @@
 
-You can also use /dev/urandom:
-
 grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1
 
 #!/bin/bash
@@ -23,6 +21,7 @@ createNS(){
 addLink(){
 	C1=$1
 	C2=$2
+	LINK_ID="dcp"$(grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1)
 	echo "Provide Interface Name of ${C1} (e.g. dcp100):"
 	read C1_IF
 	echo "Provide Interface Name of ${C2} (e.g. dcp100):"
@@ -34,12 +33,13 @@ addLink(){
 	ip link set veth1_r netns ${C2}
 	ip netns exec ${C1} ip l set veth1_l name ${C1_IF}
 	ip netns exec ${C2} ip l set veth1_r name ${C2_IF}
-	ip netns exec ${C1} ip a add 10.0.0.1/30 dev ${C1_IF}
-	ip netns exec ${C2} ip a add 10.0.0.2/30 dev ${C2_IF}
-	ip netns exec ${C1} ip l set ${C1_IF} up
-	ip netns exec ${C2} ip l set ${C2_IF} up
-	ip netns exec ${C1} ip r add 0.0.0.0/0 via 10.0.0.2
-	ip netns exec ${C2} ip r add 0.0.0.0/0 via 10.0.0.1
+#	ip netns exec ${C1} ip a add 10.0.0.1/30 dev ${C1_IF}
+#	ip netns exec ${C2} ip a add 10.0.0.2/30 dev ${C2_IF}
+#	ip netns exec ${C1} ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
+#	ip netns exec ${C2} ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
+#	ip netns exec ${C1} ip l set ${C1_IF} up
+#	ip netns exec ${C2} ip l set ${C2_IF} up
+
 }
 ##############################################################
 C1_ID=$(docker inspect --format="{{.Id}}" ${C1_NAME})

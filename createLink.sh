@@ -1,6 +1,3 @@
-
-grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1
-
 #!/bin/bash
 ## sudo bash createLink.sh <C1_name> <C2_Name>
 C1_NAME=$1
@@ -15,30 +12,31 @@ createNS(){
 	mkdir -p /var/run/netns/
 	ln -sfT /proc/$pid/ns/net /var/run/netns/${CNAME}
 	#ip netns exec ${CNAME} ip a
-	echo "Namespace ${CNAME} Created for "${C_ID}
+	echo "Namespace ${CNAME} Created for ${C_ID}"
 }
 #################################
 addLink(){
 	C1=$1
 	C2=$2
 	LINK_ID="dcp"$(grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1)
-	echo "Provide Interface Name of ${C1} (e.g. dcp100):"
-	read C1_IF
-	echo "Provide Interface Name of ${C2} (e.g. dcp100):"
-	read C2_IF
+	#echo "Provide Interface Name of ${C1} (e.g. dcp100):"
+	#read C1_IF
+	#echo "Provide Interface Name of ${C2} (e.g. dcp100):"
+	#read C2_IF
 	#ip netns exec ${CONTAINER_ID}) ip a
-	echo "Creating Link ..."
+	echo "Creating Link ID (${LINK_ID})..."
 	ip link add veth1_l type veth peer veth1_r
 	ip link set veth1_l netns ${C1}
 	ip link set veth1_r netns ${C2}
-	ip netns exec ${C1} ip l set veth1_l name ${C1_IF}
-	ip netns exec ${C2} ip l set veth1_r name ${C2_IF}
+	ip netns exec ${C1} ip l set veth1_l name ${LINK_ID}
+	ip netns exec ${C2} ip l set veth1_r name ${LINK_ID}
+	ip netns exec ${C1} ip l set ${LINK_ID} up
+	ip netns exec ${C2} ip l set ${LINK_ID} up
 #	ip netns exec ${C1} ip a add 10.0.0.1/30 dev ${C1_IF}
 #	ip netns exec ${C2} ip a add 10.0.0.2/30 dev ${C2_IF}
 #	ip netns exec ${C1} ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
 #	ip netns exec ${C2} ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
-#	ip netns exec ${C1} ip l set ${C1_IF} up
-#	ip netns exec ${C2} ip l set ${C2_IF} up
+
 
 }
 ##############################################################

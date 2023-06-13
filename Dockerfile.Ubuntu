@@ -1,6 +1,7 @@
-### $sudo docker build -t host:latest  -f Dockerfile.Ubuntu .
+### sudo docker build -t host:latest  -f Dockerfile.Ubuntu .
 FROM ubuntu:latest
 RUN apt update
 RUN apt -y install --fix-missing
 RUN apt -y install --fix-missing net-tools iputils-ping iproute2 
+RUN apt -y install --fix-missing lldpd
 

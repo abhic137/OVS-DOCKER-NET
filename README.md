@@ -1,7 +1,9 @@
 # Build Containers
 ## OVS
 `sudo docker pull openvswitch/ovs:2.11.2_debian`
-`sudo docker tag openvswitch/ovs:2.11.2_debian openvswitch/ovs:latest`
+`sudo docker tag openvswitch/ovs:2.11.2_debian openvswitch/ovs:latest .`
+## RYU
+`sudo docker pull osrg/ryu`
 ## Host
 `sudo docker build -f Dockerfile.Ubuntu -t host:latest`
 ## Fireup the containers

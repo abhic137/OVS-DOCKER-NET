@@ -1,3 +1,8 @@
+
+You can also use /dev/urandom:
+
+grep -m1 -ao '[0-9]' /dev/urandom | sed s/0/10/ | head -n1
+
 #!/bin/bash
 ## sudo bash createLink.sh <C1_name> <C2_Name>
 C1_NAME=$1

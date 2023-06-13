@@ -4,7 +4,7 @@
 Creates two host container named `h1`, `h2` and `h3`.
 It additionally creates `s1`,`ovsdb-server`, and `ryu` controller.
 ## Add links between `h1` and `h2` and bridge
-### With brctl
+### With brctl <span style="color:blue"> Not working exactly </span>
 * Create Links
 ```
 sudo bash createLink.sh h1 h2
@@ -43,4 +43,34 @@ sudo ip netns exec h1 ping -c3 10.0.0.2
 sudo ip netns exec h3 ping -c3 10.0.0.1
 ```
 
-### OVS
+### OVS (Without Controller)
+* Create Links
+```
+sudo bash createLink.sh h1 s1
+sudo bash createLink.sh h2 s1
+```
+* Create bridge in `s1`
+```
+sudo docker exec s1 ovs-vsctl add-br br0
+sudo ip netns exec s1 ifconfig -a | grep dcp*| awk -F':' '{print $1}'   ## List interface names; Use Outputs as inputs of next CMD separately
+sudo docker exec s1 ovs-vsctl add-port br0 <INTF1>
+sudo docker exec s1 ovs-vsctl add-port br0 <INTF2>
+...
+sudo docker exec s1 ovs-vsctl set-fail-mode br0 standalone
+```
+* Add IP to `h1` and `h2`
+```
+C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+sudo ip netns exec h1 ip a add 10.0.0.1/30 dev ${C1_IF}
+C2_IF=$(sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+sudo ip netns exec h2 ip a add 10.0.0.2/30 dev ${C2_IF}
+sudo ip netns exec h1 ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
+sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
+```
+
+* Test
+```
+sudo docker exec h1 ping -c3 10.0.0.2
+sudo docker exec h2 ping -c3 10.0.0.1
+```
+### OVS (With Ryu)

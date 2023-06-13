@@ -1,8 +1,15 @@
-# Add links beteen two running container
+# Build Containers
+## OVS
+`sudo docker pull openvswitch/ovs:2.11.2_debian`
+`sudo docker tag openvswitch/ovs:2.11.2_debian openvswitch/ovs:latest`
+## Host
+`sudo docker build -f Dockerfile.Ubuntu -t host:latest`
 ## Fireup the containers
 `sudo docker-compose up -d`
 Creates two host container named `h1`, `h2` and `h3`.
 It additionally creates `s1`,`ovsdb-server`, and `ryu` controller.
+
+# Add links beteen two running container
 ## Add links between `h1` and `h2` and bridge
 ### With brctl <span style="color:blue"> Not working exactly </span>
 * Create Links

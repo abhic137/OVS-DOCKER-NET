@@ -3,6 +3,7 @@ version: '3'
 services:
   #################
   ovsdb-server:
+    hostname: ovs-server
     container_name: ovsdb-server
     cap_add:
       - NET_ADMIN
@@ -23,6 +24,7 @@ services:
     command: ovsdb-server
   #################
   switch:
+    hostname: ovs-switch
     container_name: s1
     cap_add:
       - NET_ADMIN
@@ -39,6 +41,7 @@ services:
     command: ovs-vswitchd
   #################
   u1:
+    hostname: h1
     container_name: h1
     image: host:latest
     command: tail -F anything
@@ -47,6 +50,7 @@ services:
 #      - ovs-vswitchd
   #################
   u2:
+    hostname: h2
     container_name: h2
     image: host:latest
     command: tail -F anything
@@ -55,6 +59,7 @@ services:
 #      - ovs-vswitchd
   #################
   u3:
+    hostname: h3
     container_name: h3
     image: host:latest
     command: tail -F anything
@@ -63,6 +68,7 @@ services:
 #      - ovs-vswitchd
   #################
   ryu:
+    hostname: ryu
     container_name: ryu
     image: osrg/ryu:latest
     networks:

@@ -21,6 +21,7 @@ sudo bash createLink.sh h2 h3
 ```
 * Create bridge in `h2`
 ```
+sudo apt-get install bridge-utils
 sudo ip netns exec h2 brctl addbr switch1
 sudo ip netns exec h2 iptables -A INPUT -i switch1 -j ACCEPT
 sudo ip netns exec h2 iptables -A FORWARD -i switch1 -j ACCEPT

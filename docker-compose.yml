@@ -24,7 +24,7 @@ services:
     command: ovsdb-server
   #################
   switch:
-    hostname: ovs-switch
+    hostname: s1
     container_name: s1
     cap_add:
       - NET_ADMIN

@@ -88,3 +88,31 @@ sudo docker exec h1 ping -c3 10.0.0.2
 sudo docker exec h2 ping -c3 10.0.0.1
 ```
 ### OVS (With Ryu)
+
+    * Create Links
+```
+sudo bash createLink.sh h1 s1
+sudo bash createLink.sh h2 s1
+```
+   * Create bridge in s1
+```
+sudo docker exec s1 ovs-vsctl add-br br0
+sudo ip netns exec s1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}'   ## List interface names; Use Outputs as inputs of next CMD separately
+sudo docker exec s1 ovs-vsctl add-port br0 <INTF1>
+sudo docker exec s1 ovs-vsctl add-port br0 <INTF2>
+```
+   * Add IP to h1 and h2
+```
+C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
+sudo ip netns exec h1 ip a add 10.0.0.1/30 dev ${C1_IF}
+C2_IF=$(sudo ip netns exec h2 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
+sudo ip netns exec h2 ip a add 10.0.0.2/30 dev ${C2_IF}
+sudo ip netns exec h1 ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
+sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
+```
+    add controller to the ovs
+```
+sudo docker exec s1 -it bash
+ovs-vsctl add-controller br0 tcp:<Ryu_ip>:6653
+
+```

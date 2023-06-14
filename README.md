@@ -30,11 +30,9 @@ sudo ip netns exec h2 sysctl net.bridge.bridge-nf-call-ip6tables=0
 
    ## List interface names; Use Outputs as inputs of next CMD separately
 ### Untested
-for INTF in $(sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}'}')
-  do sudo ip netns exec h2 brctl addif switch1 ${INTF}
-done
+sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}' | xargs -I {} echo sudo ip netns exec h2 brctl addif switch1 $1 {};
 ### Tested
-sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}'}'
+sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}'
 sudo ip netns exec h2 brctl addif switch1 <ARG1>
 sudo ip netns exec h2 brctl addif switch1 <ARG2> 
 ...

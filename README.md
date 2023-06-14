@@ -40,9 +40,9 @@ sudo ip netns exec h2 brctl addif switch1 <ARG2>
 ```
 * Add IP to `h1` and `h3`
 ```
-C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
 sudo ip netns exec h1 ip a add 10.0.0.1/30 dev ${C1_IF}
-C2_IF=$(sudo ip netns exec h3 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+C2_IF=$(sudo ip netns exec h3 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
 sudo ip netns exec h3 ip a add 10.0.0.2/30 dev ${C2_IF}
 sudo ip netns exec h1 ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
 sudo ip netns exec h3 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
@@ -66,7 +66,7 @@ sudo bash createLink.sh h2 s1
 * Create bridge in `s1`
 ```
 sudo docker exec s1 ovs-vsctl add-br br0
-sudo ip netns exec s1 ifconfig -a | grep dcp*| awk -F':' '{print $1}'   ## List interface names; Use Outputs as inputs of next CMD separately
+sudo ip netns exec s1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}'   ## List interface names; Use Outputs as inputs of next CMD separately
 sudo docker exec s1 ovs-vsctl add-port br0 <INTF1>
 sudo docker exec s1 ovs-vsctl add-port br0 <INTF2>
 ...
@@ -74,9 +74,9 @@ sudo docker exec s1 ovs-vsctl set-fail-mode br0 standalone
 ```
 * Add IP to `h1` and `h2`
 ```
-C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+C1_IF=$(sudo ip netns exec h1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
 sudo ip netns exec h1 ip a add 10.0.0.1/30 dev ${C1_IF}
-C2_IF=$(sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}')
+C2_IF=$(sudo ip netns exec h2 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}')
 sudo ip netns exec h2 ip a add 10.0.0.2/30 dev ${C2_IF}
 sudo ip netns exec h1 ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
 sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}

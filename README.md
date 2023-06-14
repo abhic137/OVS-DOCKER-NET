@@ -33,7 +33,7 @@ sudo ip netns exec h2 sysctl net.bridge.bridge-nf-call-ip6tables=0
 ### Untested
 sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}' | xargs -I {} echo sudo ip netns exec h2 brctl addif switch1 $1 {};
 ### Tested
-sudo ip netns exec h2 ifconfig -a | grep dcp*| awk -F':' '{print $1}'
+sudo ip netns exec h2 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}'
 sudo ip netns exec h2 brctl addif switch1 <ARG1>
 sudo ip netns exec h2 brctl addif switch1 <ARG2> 
 ...

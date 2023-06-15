@@ -114,7 +114,7 @@ sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
 
 * Add controller to the ovs
 ```
-sudo docker exec s1 ovs-vsctl add-controller br0 tcp:<Ryu_ip>:6653
+sudo docker exec s1 ovs-vsctl add-controller br0 tcp:172.18.0.4:6653
 ```
 * Inside the ryu container
 ```

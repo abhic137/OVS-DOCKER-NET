@@ -100,6 +100,7 @@ sudo docker exec s1 ovs-vsctl add-br br0
 sudo ip netns exec s1 ifconfig -a | grep -E "dcp.*"| awk -F':' '{print $1}'   ## List interface names; Use Outputs as inputs of next CMD separately
 sudo docker exec s1 ovs-vsctl add-port br0 <INTF1>
 sudo docker exec s1 ovs-vsctl add-port br0 <INTF2>
+sudo docker exec s1 ovs-vsctl set-fail-mode br0 secure
 ```
    * Add IP to h1 and h2
 ```

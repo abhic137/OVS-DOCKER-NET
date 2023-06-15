@@ -111,9 +111,8 @@ sudo ip netns exec h2 ip a add 10.0.0.2/30 dev ${C2_IF}
 sudo ip netns exec h1 ip r add 10.0.0.2/32 via 0.0.0.0 dev ${C1_IF}
 sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
 ```
-    add controller to the ovs
-```
-sudo docker exec s1 -it bash
-ovs-vsctl add-controller br0 tcp:<Ryu_ip>:6653
 
+    * Add controller to the ovs
+```
+sudo docker exec s1 ovs-vsctl add-controller br0 tcp:<Ryu_ip>:6653
 ```

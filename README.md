@@ -116,3 +116,8 @@ sudo ip netns exec h2 ip r add 10.0.0.1/32 via 0.0.0.0 dev ${C2_IF}
 ```
 sudo docker exec s1 ovs-vsctl add-controller br0 tcp:<Ryu_ip>:6653
 ```
+* Inside the ryu container
+```
+cd ryu/ryu/app
+ryu-manager --observe-links simple_switch.py 
+```

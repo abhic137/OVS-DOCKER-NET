@@ -126,3 +126,11 @@ ryu-manager --observe-links simple_switch.py
 sudo docker exec h1 ping -c3 10.0.0.2
 sudo docker exec h2 ping -c3 10.0.0.1
 ```
+
+
+
+**Save docker images
+```
+docker ps
+sudo docker save <image_name_or_id> > <name>.tar
+```

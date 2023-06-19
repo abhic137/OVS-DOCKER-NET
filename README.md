@@ -129,8 +129,20 @@ sudo docker exec h2 ping -c3 10.0.0.1
 
 
 
-**Save docker images
+* Save docker images
 ```
 docker images
 sudo docker save <image_name_or_id> > <name>.tar
 ```
+* Split docker images
+```
+split --verbose -b 200M ryu:latest.tar ryu:latest.tar.part
+```
+* recombine
+```cat oai-gnb_latest.tar.a? > oai-gnb_latest_18.tar
+```
+* Create Docker image
+```sudo docker load --input oai-gnb_latest_18.tar
+sudo docker tag <Image-ID> oai-gnb:latest
+```
+

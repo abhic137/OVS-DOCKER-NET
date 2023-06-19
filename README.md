@@ -139,10 +139,12 @@ sudo docker save <image_name_or_id> > <name>.tar
 split --verbose -b 200M ryu:latest.tar ryu:latest.tar.part
 ```
 * recombine
-```cat oai-gnb_latest.tar.a? > oai-gnb_latest_18.tar
+```
+cat oai-gnb_latest.tar.a? > oai-gnb_latest_18.tar
 ```
 * Create Docker image
-```sudo docker load --input oai-gnb_latest_18.tar
+```
+sudo docker load --input oai-gnb_latest_18.tar
 sudo docker tag <Image-ID> oai-gnb:latest
 ```
 

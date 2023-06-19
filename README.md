@@ -131,6 +131,6 @@ sudo docker exec h2 ping -c3 10.0.0.1
 
 **Save docker images
 ```
-docker ps
+docker images
 sudo docker save <image_name_or_id> > <name>.tar
 ```
